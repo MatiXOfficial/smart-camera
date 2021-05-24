@@ -1,0 +1,6 @@
+{
+    "n_frames_before": 20,
+    "n_frames_after": 20,
+    "email_interval": 120,
+    "model_name": "face"
+}
