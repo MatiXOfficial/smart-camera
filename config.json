@@ -2,5 +2,7 @@
     "n_frames_before": 20,
     "n_frames_after": 20,
     "email_interval": 120,
-    "model_name": "face"
+    "model_name": "face",
+    "led_gpio_pin": 18,
+    "buzzer_gpio_pin": 16
 }

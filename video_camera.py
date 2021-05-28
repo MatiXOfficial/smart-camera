@@ -3,6 +3,7 @@ from datetime import datetime
 import numpy as np
 import time
 from time import perf_counter
+from gpio_devices import GPIODevices
 
 class VideoCamera:
 
@@ -13,6 +14,8 @@ class VideoCamera:
         self.config = config
         self.email_connection = email_connection
         self.last_email_epoch = 0
+        
+        self.gpio_devices = GPIODevices(config)
         
     def update_model(self, model):
         self.model = model
@@ -63,7 +66,8 @@ class VideoCamera:
             self.current_jpeg = jpeg
             if is_reco:
                 frame_neg_counter = 0
-                if not recording:
+                if not recording:  # start a recording
+                    self.gpio_devices.start()
                     recording = True
                     start_time = perf_counter()
             
@@ -75,8 +79,9 @@ class VideoCamera:
             else:
                 frames_after += [frame]
                 frame_neg_counter += 1
-                if frame_neg_counter > self.config.n_frames_after:
+                if frame_neg_counter > self.config.n_frames_after:  # save the recording
                     end_time = perf_counter()
+                    self.gpio_devices.stop()
                     elapsed_time = end_time - start_time
                     self.save_video(frames_before + frames_after, elapsed_time)
                     recording = False
