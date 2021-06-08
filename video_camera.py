@@ -3,6 +3,8 @@ from datetime import datetime
 import numpy as np
 import time
 from time import perf_counter
+import os
+
 from gpio_devices import GPIODevices
 
 class VideoCamera:
@@ -27,7 +29,11 @@ class VideoCamera:
         return frame, jpeg.tobytes(), is_reco
     
     def __reco_faces(self, frame):
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        try:
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        except cv2.error:
+            print('Error: could not find the camera')
+            os._exit(1)
     
         faces = self.model.detectMultiScale(
             gray,
@@ -42,6 +48,8 @@ class VideoCamera:
         return frame, (len(faces) > 0)
 
     def save_video(self, frames, elapsed_time, name=None):
+        if not os.path.exists('./videos'):
+            os.mkdir('./videos')
         if name is None:
             name = f'./videos/{datetime.now()}.avi'
         print(f'Saving {len(frames)} frames to {name}')
@@ -90,7 +98,7 @@ class VideoCamera:
                     if (time.time() - self.last_email_epoch) > self.config.email_interval:
                         self.last_email_epoch = time.time()
                         ret, jpeg = cv2.imencode('.jpg', frames_after[0])
-                        print("Sending email...")
+                        print("Sending an email...")
                         self.email_connection.send_email(jpeg.tobytes())
                         
                     # clear

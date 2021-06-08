@@ -3,6 +3,11 @@
     "n_frames_after": 20,
     "email_interval": 120,
     "model_name": "face",
+    
     "led_gpio_pin": 18,
-    "buzzer_gpio_pin": 16
+    "buzzer_gpio_pin": 16,
+    
+    "email_from": "",
+    "email_from_password": "",
+    "email_to": ""
 }

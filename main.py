@@ -19,7 +19,7 @@ models = {
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 config = Config()
-video_camera = VideoCamera(models[config.model_name], config, EmailConnection())
+video_camera = VideoCamera(models[config.model_name], config, EmailConnection(config))
 
 app = Flask(__name__)
     
@@ -81,6 +81,8 @@ def change_config():
     return index()
     
 def get_videos_list_html():
+    if not os.path.exists('./videos'):
+        os.mkdir('./videos')
     files = os.listdir('./videos')
     files.sort(reverse=True)
     result = "<ul>\n"
