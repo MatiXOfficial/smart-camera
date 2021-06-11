@@ -21,7 +21,9 @@ Smart Camera project for Embedded Systems course at AGH UST.
 - email
 
 # Usage
-Go to the root directory of the project and run:
+Before running the software, update email configuration in `config.json`.
+
+To start the program, go to the root directory of the project and run:
 ```
 python main.py
 ```
