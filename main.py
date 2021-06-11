@@ -1,6 +1,5 @@
 import cv2
 from flask import Flask, render_template, render_template_string, Response, send_from_directory, url_for, request
-from flask_autoindex import AutoIndex
 import threading
 import os
 
@@ -16,7 +15,6 @@ models = {
     'lower body': cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_lowerbody.xml'),
     'upper body': cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_upperbody.xml')
 }
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 config = Config()
 video_camera = VideoCamera(models[config.model_name], config, EmailConnection(config))
@@ -122,4 +120,4 @@ def get_models_choice_html():
 
 if __name__ == '__main__':
 	threading.Thread(target=video_camera.generate, daemon=True).start()
-	app.run(host='192.168.100.184')
+	app.run(host='localhost')
